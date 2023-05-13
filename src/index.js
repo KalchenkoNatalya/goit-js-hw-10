@@ -19,13 +19,16 @@ function onInput(event) {
     Notiflix.Notify.info('Введіть назву країни');
   } else {
     fetchCountries(inputValue)
-      // .then(countries => console.log(countries))
-      .then(countries => renderByConditions(countries))
+      // .then(countries => {console.log(countries); console.log(countries.status)}})
+      .then(countries => {
+        if (countries.status === 404) {
+          throw new Error();
+        } else {
+          renderByConditions(countries);
+        }
+      })
       .catch(error => {
-        refs.countryInfo.innerHTML = '';
-        refs.countryList.innerHTML = '';
         Notiflix.Notify.failure('Oops, there is no country with that name');
-        // alert ("Oops, there is no country with that name")
       });
   }
   if (inputValue === '') {
@@ -61,28 +64,10 @@ function renderNameCountries(countries) {
 function renderInfoAboutCountry(countries) {
   const markup = countries
     .map(({ capital, population, languages }) => {
-      const countryLanguage = Object.values(languages)
+      const countryLanguage = Object.values(languages);
       return `<p><span class="span">Capital: </span>${capital}</p><p><span class="span">Population:</span> ${population}</p><p><span class="span">Languages:</span> ${countryLanguage}</p>`;
     })
     .join('');
-  // console.log(markup)
+
   refs.countryInfo.innerHTML = markup;
 }
-
-// function renderInfoAboutCountry(countries) {
-//   const markup = countries
-//     .map(({ name, capital, population, flags, languages }) => {
-//       return `<li class="list"><img class="flag-img" src = "${flags.svg}"/><h2 class="country">${name.official}<h3 class="country-capital">${capital}<p>${population}<p>${languages['']}</p></p></h3></h2></li>`;
-//     })
-//     .join('');
-//   // console.log(markup)
-//   refs.countryInfo.innerHTML = markup;
-// }
-// function renderNameCountries(countries) {
-//   const markup = countries
-//     .map(({ name, flags }) => {
-//       return `<li class="list"><img class="flag-img" src = "${flags.svg}"/><h2 class="country">${name.official}</h2></li>`;
-//     })
-//     .join('');
-//   refs.countryList.innerHTML = markup;
-// }
