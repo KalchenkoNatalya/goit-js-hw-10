@@ -4,7 +4,7 @@ import { fetchCountries } from './api';
 import Notiflix from 'notiflix';
 
 const DEBOUNCE_DELAY = 300;
-refs = {
+const refs = {
   input: document.getElementById('search-box'),
   countryList: document.querySelector('.country-list'),
   countryInfo: document.querySelector('.country-info'),
